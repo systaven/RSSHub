@@ -4,7 +4,7 @@
   functions = "netlify/functions"
 
 [context.production.environment]
-  NODE_VERSION = "20" # 强制使用 Node 20，解决 await 报错
+  NODE_VERSION = "20"
 
 [[redirects]]
   from = "/*"
@@ -12,8 +12,8 @@
   status = 200
 
 [functions]
-  # 关键：手动把所有需要的文件强行带上
-  # 既然它找不到 art 模板，我们就强制包含进去
-  included_files = ["lib/**/*.js", "lib/**/*.art", "lib/**/*.ts", "package.json"]
+  # 关键：告诉 Netlify "虽然你没打包这些文件，但请务必把它们复制到服务器上"
+  # 我们把 lib 目录和 package.json 强行带上
+  included_files = ["lib/**", "package.json"]
   
-  # 注意：这里千万不要再写 node_bundler = "esbuild" 了！
+  # 这里不指定 node_bundler，让它使用默认值，配合上面的障眼法即可
