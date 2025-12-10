@@ -1,6 +1,7 @@
 import { handle } from 'hono/netlify';
-// 核心修改：不要指向 src/server.ts，而是指向编译后的 lib/server.js
-// Netlify 已经在前一步把 TS 编译成 JS 了，直接用！
-import app from '../../lib/server.js'; 
+
+// 动态引入，绕过编译检测
+// 这里的 import 会在运行时执行，而不是打包时执行
+const { app } = await import('../../lib/pkg.js'); 
 
 export const handler = handle(app);
