@@ -12,12 +12,11 @@
   status = 200
 
 [functions]
-  # 1. 启用 esbuild：让它帮我们生成正确的 ESM 入口文件
-  node_bundler = "esbuild"
+  # 1. 关键：删掉了 node_bundler = "esbuild"
+  # 让 Netlify 保持原样，不要转译我的代码
   
-  # 2. 核心大招：告诉 esbuild "所有的依赖都不要打包！"
-  # 这样既避免了 .art 报错，又避免了体积超限
+  # 2. 依然强制忽略所有 node_modules 打包，防止体积爆炸
   external_node_modules = ["*"]
   
-  # 3. 强制携带文件：依赖虽然不打包，但必须物理复制过去
+  # 3. 强制带上 lib 目录（因为代码里是动态引用的，打包器看不见）
   included_files = ["lib/**", "package.json"]
