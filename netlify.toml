@@ -1,9 +1,21 @@
 [build]
   command = "npm run build"
-  publish = "lib"  # 或者 dist，取决于构建输出哪里，但这对 RSSHub 不重要
-  functions = "api" # 指向你的 serverless 函数目录
+  publish = "lib"   # 这里假设构建后文件在 lib，如果为空则保持默认
+  functions = "netlify/functions" # 告诉 Netlify 函数入口在这里
 
+# 关键翻译：把 Vercel 的 rewrites 翻译成 Netlify 的 redirects
+[[redirects]]
+  from = "/favicon.ico"
+  to = "/favicon.png"
+  status = 200
+
+# 核心路由：把所有请求都转交给后端函数（解决 404 的关键）
 [[redirects]]
   from = "/*"
-  to = "/.netlify/functions/index" # 这里需要一个入口函数
+  to = "/.netlify/functions/index"
   status = 200
+
+# 翻译 includeFiles：强制打包模板文件，否则会报错找不到文件
+[functions]
+  included_files = ["src/templates/**/*.art"]
+  node_bundler = "esbuild"
