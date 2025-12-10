@@ -12,5 +12,9 @@
   status = 200
 
 [functions]
-  # 这一行千万别动，它是运行时能找到 lib/pkg.js 的关键
+  # 这一步至关重要！！
+  # 因为代码里那个 dynamicPath 是骗过打包器的，所以这里必须手动把文件带上
   included_files = ["lib/**", "package.json"]
+  
+  # 显式忽略 node_modules 打包，防止体积爆炸，反正我们运行时去 node_modules 拿
+  external_node_modules = ["*"]
