@@ -1,0 +1,9 @@
+[build]
+  command = "npm run build"
+  publish = "lib"  # 或者 dist，取决于构建输出哪里，但这对 RSSHub 不重要
+  functions = "api" # 指向你的 serverless 函数目录
+
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/index" # 这里需要一个入口函数
+  status = 200
